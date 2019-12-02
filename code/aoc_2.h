@@ -5,10 +5,11 @@
 #include <cstdint>
 
 namespace aoc_2 {
-    int64_t run_1(vecint_t & input) {
-        // start 1202 program
-        input.at(1) = 12;
-        input.at(2) = 2;
+    int64_t compute(vecint_t const & origin_input, int64_t noun, int64_t verb) {
+        vecint_t input = origin_input;
+
+        input.at(1) = noun;
+        input.at(2) = verb;
 
         // start execution
         size_t pos = 0;
@@ -37,14 +38,23 @@ namespace aoc_2 {
             pos += 4;
         }
 
-        //print_vecint(input);
-        
         // return result at 0
         return input.at(0);
     }
 
+    int64_t run_1(vecint_t & input) {
+        return compute(input, 12, 2);
+    }
+
     int64_t run_2(vecint_t & input) {
-        return 0;
+        for (int64_t noun = 0; noun < 100; noun++) {
+            for (int64_t verb = 0; verb < 100; verb++) {
+                if (compute(input, noun, verb) == 19690720) {
+                    return noun * 100 + verb;
+                }
+            }
+        }
+        return -1;
     }
 } // namespace aoc_2
 
