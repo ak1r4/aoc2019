@@ -3,13 +3,15 @@
 
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <iostream>
 
 using strvec_t = std::vector<std::string>;
+using vecint_t = std::vector<int64_t>;
 
 
-strvec_t file_to_vec(const std::string& filename) {
+strvec_t file_to_strvec(const std::string& filename) {
     std::ifstream ifs(filename);
     strvec_t lines;
 
@@ -24,10 +26,42 @@ strvec_t file_to_vec(const std::string& filename) {
 }
 
 
-void print_vec(strvec_t const vec) {
+vecint_t file_to_vecint(std::string const& filename) {
+    std::ifstream ifs(filename);
+
+    std::string s;
+    vecint_t vec;
+
+    if (!std::getline(ifs, s)) {
+        std::cerr << "Cannot open file: " << filename << "\n";
+    }
+
+    std::istringstream ss {s};
+
+    while (ss) {
+        std::string s_;
+
+        if (!std::getline(ss, s_, ',')) {
+            break;
+        }
+        vec.push_back(std::stoi(s_));
+    }
+
+    return vec;
+}
+
+
+void print_strvec(strvec_t const vec) {
     for (auto const s: vec) {
         std::cout << s << "\n";
     }
+}
+
+void print_vecint(vecint_t const vec) {
+    for (auto const s: vec) {
+        std::cout << s << ", ";
+    }
+    std::cout << "\n";
 }
 
 #endif
