@@ -1,6 +1,7 @@
 #include "./utils.h"
 #include "./aoc_1.h"
 #include "./aoc_2.h"
+#include "./aoc_3.h"
 #include <iostream>
 #include <string>
 
@@ -18,5 +19,9 @@ int main() {
     std::cout << "Day 2 - run 1: " << aoc_2::run_1(input_2) << "\n";
     std::cout << "Day 2 - run 2: " << aoc_2::run_2(input_2) << "\n";
 
+    strvec_t input_3 = file_to_strvec(DATA_ROOT + "/aoc_3");
+
+    std::cout << "Day 3 - run 1: " << aoc_3::run_1(input_3) << "\n";
+    std::cout << "Day 3 - run 2: " << aoc_3::run_2(input_3) << "\n";
     return 0;
 }

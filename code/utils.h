@@ -50,6 +50,16 @@ vecint_t file_to_vecint(std::string const& filename) {
     return vec;
 }
 
+void split_string_to_strvec(std::string const & str, strvec_t & strvec) {
+    std::stringstream ss {str};
+
+    while (ss.good()) {
+        std::string substr;
+        std::getline(ss, substr, ',');
+        strvec.push_back(substr);
+    }
+}
+
 
 void print_strvec(strvec_t const vec) {
     for (auto const s: vec) {
