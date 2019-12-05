@@ -30,7 +30,10 @@ struct coord_hash
 };
 
 bool coord_sort_key(coord_t const  & a, coord_t const & b) {
-    return (abs(a.first) + abs(a.second)) < (abs(b.first) + abs(b.second));
+    if (a.first == b.first) {
+        return a.second < b.second;
+    }
+    return a.first < b.first;
 }
 
 using coord_vec = std::vector<coord_t>;
@@ -47,7 +50,7 @@ namespace aoc_3 {
         std::cout << "\n";
     }
 
-    void steps_to_coords(coord_vec & coords, strvec_t const & steps, bool sort) {
+    void steps_to_coords(coord_vec & coords, strvec_t const & steps) {
         int64_t x = 0;
         int64_t y = 0;
 
@@ -74,72 +77,65 @@ namespace aoc_3 {
                 }
             }
         }
-        if (sort) {
-            std::sort(coords.begin(), coords.end(), coord_sort_key);
-        }
+    }
+
+    void find_intersections(coord_vec & vec_intersect, coord_vec const & coord_vec_1, coord_vec const & coord_vec_2) {
+        coord_vec coord_vec_1_copy = coord_vec_1;
+        coord_vec coord_vec_2_copy = coord_vec_2;
+
+        std::sort(coord_vec_1_copy.begin(), coord_vec_1_copy.end(), coord_sort_key);
+        std::sort(coord_vec_2_copy.begin(), coord_vec_2_copy.end(), coord_sort_key);
+
+        std::set_intersection(coord_vec_1_copy.begin(), coord_vec_1_copy.end(),
+                              coord_vec_2_copy.begin(), coord_vec_2_copy.end(),
+                              std::back_inserter(vec_intersect));
+    }
+
+    void input_to_coords_and_intersections(strvec_t const & input, coord_vec & coord_vec_1, coord_vec & coord_vec_2, coord_vec & intersections) {
+        strvec_t wire_1;
+        strvec_t wire_2;
+
+        split_string_to_strvec(input[0], wire_1);
+        split_string_to_strvec(input[1], wire_2);
+
+        steps_to_coords(coord_vec_1, wire_1);
+        steps_to_coords(coord_vec_2, wire_2);
+
+        find_intersections(intersections, coord_vec_1, coord_vec_2);
     }
 
     int64_t run_1(strvec_t const & input) {
-        strvec_t wire_1;
-        strvec_t wire_2;
-
-        split_string_to_strvec(input[0], wire_1);
-        split_string_to_strvec(input[1], wire_2);
-
+        coord_vec intersections;
         coord_vec distant_1;
         coord_vec distant_2;
 
-        steps_to_coords(distant_1, wire_1, true);
-        steps_to_coords(distant_2, wire_2, true);
+        input_to_coords_and_intersections(input, distant_1, distant_2, intersections);
 
-        for (auto const coord: distant_1) {
-            if (std::find_if(
-                    distant_2.begin(),
-                    distant_2.end(),
-                    [coord](coord_t const & el){
-                        return (coord.first == el.first) && (coord.second == el.second);
-                    }) != distant_2.end()) {
-                std::cout << "coord" << coord.first << ", " << coord.second << "\n";
-                return abs(coord.first) + abs(coord.second); 
-            }
+        std::vector<int64_t> distants;
+
+        for (auto const coord: intersections) {
+            distants.push_back(abs(coord.first) + abs(coord.second));
         }
 
-        return 0;
+        return *std::min_element(distants.begin(), distants.end());
     }
 
     int64_t run_2(strvec_t const & input) {
-        strvec_t wire_1;
-        strvec_t wire_2;
-
-        //std::string input_0 = "R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51";
-        //std::string input_1 = "U98,R91,D20,R16,D67,R40,U7,R15,U6,R7";
-        //split_string_to_strvec(input_0, wire_1);
-        //split_string_to_strvec(input_1, wire_2);
-
-        split_string_to_strvec(input[0], wire_1);
-        split_string_to_strvec(input[1], wire_2);
-
+        coord_vec intersections;
         coord_vec distant_1;
         coord_vec distant_2;
 
-        steps_to_coords(distant_1, wire_1, false);
-        steps_to_coords(distant_2, wire_2, false);
+        input_to_coords_and_intersections(input, distant_1, distant_2, intersections);
 
-        //print_coord_set(distant_1);
-        //print_coord_set(distant_2);
+        std::vector<int64_t> distants;
 
-        for (size_t i = 0; i < distant_1.size(); i++) {
-            for (size_t j = 0; j < distant_2.size(); j++) {
-                if ((distant_1.at(i).first == distant_2.at(j).first)
-                        && (distant_1.at(i).second == distant_2.at(j).second)) {
-                    std::cout << distant_1.at(i).first << ", " << distant_1.at(i).second << "\n";
-                    std::cout << "i: " << i << "j: " << j << "\n";
-                    return i + j + 2;
-                }
-                
-            }
+        for (auto const coord: intersections) {
+            int64_t dist_1 = std::distance(distant_1.begin(), std::find(distant_1.begin(), distant_1.end(), coord));
+            int64_t dist_2 = std::distance(distant_2.begin(), std::find(distant_2.begin(), distant_2.end(), coord));
+            distants.push_back(dist_1 + dist_2 + 2);
         }
-        return 0;
+
+        return *std::min_element(distants.begin(), distants.end());
     }
 }
 #endif
