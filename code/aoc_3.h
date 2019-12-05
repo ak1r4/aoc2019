@@ -2,32 +2,10 @@
 #define AOC2019_3_
 
 #include "./utils.h"
-#include <cstdint>
-#include <sstream>
-#include <set>
-#include <unordered_set>
-#include <cstdlib>
 #include <algorithm>
 
-
 using coord_t = std::pair<int64_t, int64_t>;
-
-struct coord_comp
-{
-    template<typename T>
-    bool operator()(const T& l, const T& r) const
-    {
-        return (abs(l.first) + abs(l.second)) < (abs(r.first) + abs(r.second));
-    }
-};
-
-struct coord_hash
-{
-    inline std::size_t operator()(coord_t const & v) const {
-        std::hash<int> int_hasher;
-        return int_hasher(v.first) ^ int_hasher(v.second);
-    }
-};
+using coord_vec = std::vector<coord_t>;
 
 bool coord_sort_key(coord_t const  & a, coord_t const & b) {
     if (a.first == b.first) {
@@ -35,11 +13,6 @@ bool coord_sort_key(coord_t const  & a, coord_t const & b) {
     }
     return a.first < b.first;
 }
-
-using coord_vec = std::vector<coord_t>;
-using coord_set = std::set<coord_t, coord_comp>;
-using coord_unordered_set = std::unordered_set<coord_t, coord_hash>;
-
 
 namespace aoc_3 {
     template<class T>
@@ -79,7 +52,9 @@ namespace aoc_3 {
         }
     }
 
-    void find_intersections(coord_vec & vec_intersect, coord_vec const & coord_vec_1, coord_vec const & coord_vec_2) {
+    void find_intersections(coord_vec & vec_intersect,
+                            coord_vec const & coord_vec_1,
+                            coord_vec const & coord_vec_2) {
         coord_vec coord_vec_1_copy = coord_vec_1;
         coord_vec coord_vec_2_copy = coord_vec_2;
 
@@ -91,7 +66,10 @@ namespace aoc_3 {
                               std::back_inserter(vec_intersect));
     }
 
-    void input_to_coords_and_intersections(strvec_t const & input, coord_vec & coord_vec_1, coord_vec & coord_vec_2, coord_vec & intersections) {
+    void input_to_coords_and_intersections(strvec_t const & input,
+                                           coord_vec & coord_vec_1,
+                                           coord_vec & coord_vec_2,
+                                           coord_vec & intersections) {
         strvec_t wire_1;
         strvec_t wire_2;
 

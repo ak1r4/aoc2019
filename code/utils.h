@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
+#include <cstdint>
 
 using strvec_t = std::vector<std::string>;
 using vecint_t = std::vector<int64_t>;
