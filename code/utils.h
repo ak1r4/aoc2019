@@ -5,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <map>
 #include <iostream>
 #include <cstdint>
 
@@ -90,6 +91,12 @@ void print_vecint(vecint_t const vec) {
         std::cout << s << ", ";
     }
     std::cout << "\n";
+}
+
+void print_multimap(std::multimap<std::string, std::string> const & map) {
+    for (auto const & element: map) {
+        std::cout << element.first << " -> " << element.second << "\n";
+    }
 }
 
 #endif
