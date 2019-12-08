@@ -73,8 +73,8 @@ namespace aoc_3 {
         strvec_t wire_1;
         strvec_t wire_2;
 
-        split_string_to_strvec(input[0], wire_1);
-        split_string_to_strvec(input[1], wire_2);
+        split_string_by_comma(input[0], wire_1);
+        split_string_by_comma(input[1], wire_2);
 
         steps_to_coords(coord_vec_1, wire_1);
         steps_to_coords(coord_vec_2, wire_2);

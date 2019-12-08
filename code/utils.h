@@ -12,7 +12,7 @@ using strvec_t = std::vector<std::string>;
 using vecint_t = std::vector<int64_t>;
 
 
-strvec_t file_to_strvec(const std::string& filename) {
+strvec_t file_to_strvec(std::string const & filename) {
     std::ifstream ifs(filename);
     strvec_t lines;
 
@@ -51,7 +51,7 @@ vecint_t file_to_vecint(std::string const& filename) {
     return vec;
 }
 
-void split_string_to_strvec(std::string const & str, strvec_t & strvec) {
+void split_string_by_comma(std::string const & str, strvec_t & strvec) {
     std::stringstream ss {str};
 
     while (ss.good()) {
@@ -61,10 +61,27 @@ void split_string_to_strvec(std::string const & str, strvec_t & strvec) {
     }
 }
 
+void split_string_by_delimiter(std::string const & str, strvec_t & strvec, std::string const & delimiter) {
+    size_t pos = 0;
+    size_t delimiter_len = delimiter.size();
+    size_t n;
 
-void print_strvec(strvec_t const vec) {
+    while((n = str.find(delimiter, pos)) != std::string::npos) {
+        strvec.push_back(str.substr(pos, n - pos));
+        pos = n + delimiter_len;
+    }
+    strvec.push_back(str.substr(pos));
+}
+
+
+void print_strvec(strvec_t const vec, bool newline = true) {
     for (auto const s: vec) {
-        std::cout << s << "\n";
+        std::cout << s;
+        if (newline) {
+            std::cout << "\n";
+        } else {
+            std::cout << " ";
+        }
     }
 }
 
