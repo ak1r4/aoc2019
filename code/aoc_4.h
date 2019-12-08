@@ -8,7 +8,7 @@ namespace aoc_4 {
     bool check_number(std::string const & number, size_t expected_count) {
         char prev = '0';
         size_t count = 1;
-        size_t highest_count = 0;
+        std::vector<size_t> counts;
 
         for (auto const & c: number) {
             if (c < prev) {
@@ -18,18 +18,17 @@ namespace aoc_4 {
             if (c == prev) {
                 ++count;
             } else {
-                highest_count = std::max(count, highest_count);
+                counts.push_back(count);
                 count = 1;
             }
             prev = c;
         }
-
-        highest_count = std::max(count, highest_count);
+        counts.push_back(count);
 
         if (expected_count == 0) {
-            return highest_count >= 2;
+            return (*std::max_element(counts.begin(), counts.end())) >= 2;
         } else {
-            return highest_count == expected_count;
+            return std::find(counts.begin(), counts.end(), expected_count) != counts.end();
         }
     }
 
