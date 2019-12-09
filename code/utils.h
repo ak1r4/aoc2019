@@ -93,7 +93,9 @@ void print_vecint(vecint_t const vec) {
     std::cout << "\n";
 }
 
-void print_multimap(std::multimap<std::string, std::string> const & map) {
+// TODO need to have some constraint on T
+template<class T>
+void print_map(T const & map) {
     for (auto const & element: map) {
         std::cout << element.first << " -> " << element.second << "\n";
     }
