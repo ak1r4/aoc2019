@@ -75,7 +75,7 @@ void split_string_by_delimiter(std::string const & str, strvec_t & strvec, std::
 }
 
 
-void print_strvec(strvec_t const vec, bool newline = true) {
+void print_strvec(strvec_t const & vec, bool newline = true) {
     for (auto const s: vec) {
         std::cout << s;
         if (newline) {
@@ -86,7 +86,7 @@ void print_strvec(strvec_t const vec, bool newline = true) {
     }
 }
 
-void print_vecint(vecint_t const vec) {
+void print_vecint(vecint_t const & vec) {
     for (auto const s: vec) {
         std::cout << s << ", ";
     }
