@@ -4,6 +4,7 @@
 #include "./aoc_3.h"
 #include "./aoc_4.h"
 #include "./aoc_6.h"
+#include "./aoc_8.h"
 #include <iostream>
 #include <string>
 
@@ -32,5 +33,8 @@ int main() {
     std::cout << "Day 6 - run 1: " << aoc_6::run_1(input_6) << "\n";
     std::cout << "Day 6 - run 2: " << aoc_6::run_2(input_6) << "\n";
 
+    strvec_t input_8 = file_to_strvec(DATA_ROOT + "/aoc_8");
+    std::cout << "Day 8 - run 1: " << aoc_8::run_1(input_8) << "\n";
+    std::cout << "Day 8 - run 2: " << aoc_8::run_2(input_8) << "\n";
     return 0;
 }
